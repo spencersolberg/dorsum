@@ -27,4 +27,6 @@ jobs:
         with:
           files: |
             target/${{ matrix.target }}/release/dorsum
-          tag_name: beta
+          tag_name: ${{ github.sha }}
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
