@@ -27,3 +27,4 @@ jobs:
         with:
           files: |
             target/${{ matrix.target }}/release/dorsum
+          tag: beta
