@@ -1,24 +1,29 @@
 on: [push]
 
-name: ARMv7 build
+name: Build
 
 jobs:
-  linux_arm7:
-    name: Linux ARMv7
+  build:
+    name: Build
     runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        target: [arm-unknown-linux-gnueabihf, armv7-unknown-linux-gnueabihf, aarch64-unknown-linux-gnu]
+
     steps:
       - uses: actions/checkout@v2
       - uses: actions-rs/toolchain@v1
         with:
           toolchain: stable
-          target: armv7-unknown-linux-gnueabihf
+          target: ${{ matrix.target }}
           override: true
       - uses: actions-rs/cargo@v1
         with:
           use-cross: true
           command: build
-          args: --target armv7-unknown-linux-gnueabihf
+          args: --target ${{ matrix.target }}
       - uses: actions/upload-artifact@v2
         with:
-          name: armv7-unknown-linux-gnueabihf
-          path: target/armv7-unknown-linux-gnueabihf/debug/dorsum
+          name: dorsum-${{ matrix.target }}
+          path: target/dorsum-${{ matrix.target }}/debug/dorsum
