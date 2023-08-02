@@ -23,7 +23,19 @@ jobs:
           use-cross: true
           command: build
           args: --target ${{ matrix.target }}
+      - name: Build archive
+        shell: bash
+        run: |
+          # Replace with the name of your binary
+          binary_name="dorsum"
+
+          dirname="$binary_name-${{ matrix.target }}"
+          mkdir "$dirname"
+          mv "target/${{ matrix.target }}/release/$binary_name" "$dirname"
+
+          tar -czf "$dirname.tar.gz" "$dirname"
+          echo "ASSET=$dirname.tar.gz" >> $GITHUB_ENV
       - uses: actions/upload-artifact@v2
         with:
           name: dorsum_${{ matrix.target }}
-          path: target/${{ matrix.target }}/debug/dorsum
+          path: ${{ env.ASSET }}
