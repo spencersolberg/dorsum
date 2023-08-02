@@ -23,10 +23,7 @@ jobs:
           use-cross: true
           command: build
           args: --target ${{ matrix.target }}
-      - uses: softprops/action-gh-release@v1
+      - uses: actions/upload-artifact@v2
         with:
-          files: |
-            target/${{ matrix.target }}/release/dorsum
-          tag_name: ${{ github.sha }}
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
+          name: dorsum_${{ matrix.target }}
+          path: target/${{ matrix.target }}/debug/dorsum
